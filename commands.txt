@@ -1,0 +1,17 @@
+kubectl apply -f configmap-dev.yaml
+kubectl describe configmap web-config-dev
+kubectl apply -f configmap-prod.yaml
+kubectl describe configmap web-config-prod
+kubectl apply -f deployment.yaml
+kubectl get pods
+kubectl apply -f secret-db.yaml
+kubectl describe secret db-credentials
+kubectl apply -f resourcequota.yaml
+kubectl describe resourcequota namespace-limits
+kubectl apply -f service.yaml
+kubectl get service web-service
+kubectl exec -it deployment/web-server -- env | grep -E "ENVIRONMENT|LOG_LEVEL|MAX_CONNECTIONS"
+kubectl exec -it deployment/web-server -- env | grep -E "DB_HOST|DB_USER|DB_PASSWORD"
+kubectl describe pods | grep -A 4 "Limits:"
+kubectl port-forward svc/web-service 8080:80
+curl http://localhost:8080
